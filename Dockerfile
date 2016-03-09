@@ -1,23 +1,19 @@
 # EXPERIMENTAL Docker support for angular2 build process.
-# Build with: docker build -t $USER/angular:$(git rev-list -n 1 HEAD) .
+# Build with: docker build -t $USER/angular2:$(git rev-list -n 1 HEAD) .
 FROM node:5.7.1
 MAINTAINER Alex Eagle
 
-# Don't run as root. bower complains, and it is less secure.
-RUN useradd -ms /bin/bash ngbuilder
+# Copy the minimal file to create a node_modules directory.
+# This takes advantage of docker's caching, so that the npm install
+# is only re-run when the npm-shrinkwrap.json was modified.
+COPY npm-shrinkwrap.json /home/
+WORKDIR /home
+RUN npm install --no-progress
 
-# Copy only the shrinkwrapped dependencies
-COPY npm-shrinkwrap.json /home/ngbuilder/
-WORKDIR /home/ngbuilder
-# This install command results in a cachable node_modules directory
-RUN npm install --silent
+COPY . /home/
 
-COPY . /home/ngbuilder/
-# https://docs.docker.com/engine/reference/builder/#copy
-# All new files and directories are created with a UID and GID of 0.
-RUN chown -R ngbuilder:ngbuilder /home/ngbuilder
-USER ngbuilder
-ENV HOME /home/ngbuilder
-
+# Allow the build to run as root. In a long-lived docker container,
+# this is a security vulnerability, but we don't have a CMD so our
+# container is not left running after the build completes.
 RUN npm run postinstall
 RUN npm run build
