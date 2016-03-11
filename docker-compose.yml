@@ -1,0 +1,17 @@
+# Run with docker-compose up
+version: '2'
+services:
+  build:
+    build:
+      context: .
+      dockerfile: scripts/docker/Dockerfile.build
+    volumes:
+     - .:/home
+  build-dart:
+    build:
+      context: .
+      dockerfile: scripts/docker/Dockerfile.build-dart
+    depends_on:
+     - build
+    volumes:
+     - .:/home

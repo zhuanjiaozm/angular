@@ -1,0 +1,6 @@
+# EXPERIMENTAL Docker support for angular2 build process.
+
+# The last stable release from https://hub.docker.com/r/google/dart/
+FROM google/dart:latest
+
+RUN pub help
