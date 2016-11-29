@@ -32,6 +32,6 @@ guidelines for [contributing][contributing] and then check out one of our issues
 [dart]: http://www.dartlang.org
 [quickstart]: https://angular.io/docs/ts/latest/quickstart.html
 [ng2]: http://angular.io
-[ngDart]: http://angulardart.org
+[ngDart]: http://angulardart.org.
 [ngJS]: http://angularjs.org
 [ng2dart]: https://github.com/dart-lang/angular2
